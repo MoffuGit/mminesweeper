@@ -10,6 +10,7 @@ leptos.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
 leptos_axum = { workspace = true, optional = true }
+mmine-ui = { path = "../mmine-ui" }
 
 http.workspace = true
 cfg-if.workspace = true
@@ -17,6 +18,6 @@ thiserror.workspace = true
 
 [features]
 default = []
-hydrate = ["leptos/hydrate"]
-ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "dep:leptos_axum"]
+hydrate = ["leptos/hydrate", "mmine-ui/hydrate"]
+ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "dep:leptos_axum", "mmine-ui/ssr"]
 
