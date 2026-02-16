@@ -1,5 +1,5 @@
 use leptos::prelude::*;
-use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
+use leptos_meta::{provide_meta_context, Body, Html, MetaTags, Stylesheet, Title};
 use leptos_router::{
     components::{Route, Router, Routes},
     StaticSegment,
@@ -34,6 +34,9 @@ pub fn App() -> impl IntoView {
 
         // sets the document title
         <Title text="Welcome to Leptos"/>
+
+        <Html attr:data-theme="dark" />
+        <Body {..} class="w-full h-screen overflow-hidden dark" />
 
         // content for this welcome page
         <Router>

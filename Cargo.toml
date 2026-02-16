@@ -32,21 +32,29 @@ strum_macros = "0.27.1"
 send_wrapper = "0.6.0"
 leptos-node-ref = "0.2.0"
 leptos_dom = "0.8.2"
-leptos-use = { version = "0.16.2", default-features = false, features = ["on_click_outside", "use_element_bounding", "use_window_size", "use_element_hover", "use_interval_fn", "signal_debounced", "use_intersection_observer"] }
+leptos-use = { version = "0.16.2", default-features = false, features = [
+  "on_click_outside",
+  "use_element_bounding",
+  "use_window_size",
+  "use_element_hover",
+  "use_interval_fn",
+  "signal_debounced",
+  "use_intersection_observer",
+] }
 leptos-typed-fallback-show = "0.2.0"
 uuid = { version = "1.17.0", features = ["v4", "js"] }
 futures = "0.3.31"
 web-time = "1.1.0"
 reactive_stores = "0.2.2"
 web-sys = { version = "0.3", features = [
-    "HtmlDocument",
-    "MediaQueryList",
-    "ResizeObserver",
-    "Clipboard",
-    "ResizeObserverBoxOptions",
-    "ResizeObserverEntry",
-    "ResizeObserverOptions",
-    "ResizeObserverSize",
+  "HtmlDocument",
+  "MediaQueryList",
+  "ResizeObserver",
+  "Clipboard",
+  "ResizeObserverBoxOptions",
+  "ResizeObserverEntry",
+  "ResizeObserverOptions",
+  "ResizeObserverSize",
 ] }
 
 # See https://github.com/leptos-rs/cargo-leptos for documentation of all the parameters.
