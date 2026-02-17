@@ -9,10 +9,10 @@ lto = true
 opt-level = 'z'
 
 [workspace.dependencies]
-leptos = { version = "0.8.2", features = ["nightly"] }
-leptos_meta = { version = "0.8.2" }
-leptos_router = { version = "0.8.2", features = ["nightly"] }
-leptos_axum = { version = "0.8.2" }
+leptos = { version = "0.8.16", features = ["nightly"] }
+leptos_meta = { version = "0.8.6" }
+leptos_router = { version = "0.8.12", features = ["nightly"] }
+leptos_axum = { version = "0.8.8" }
 
 axum = "0.8.4"
 cfg-if = "1.0.0"
@@ -25,7 +25,7 @@ thiserror = "2.0.12"
 tokio = { version = "1.45.0", features = ["full"] }
 tower = { version = "0.5.2", features = ["full"] }
 tower-http = { version = "0.6.4", features = ["full"] }
-wasm-bindgen = "=0.2.100"
+wasm-bindgen = "0.2.100"
 tailwind_fuse = { version = "0.3.2", features = ["variant"] }
 strum = "0.27.1"
 strum_macros = "0.27.1"
@@ -56,6 +56,24 @@ web-sys = { version = "0.3", features = [
   "ResizeObserverOptions",
   "ResizeObserverSize",
 ] }
+
+[patch.crates-io]
+leptos = { path = "../leptos/leptos/" }
+leptos_meta = { path = "../leptos/meta/" }
+leptos_router = { path = "../leptos/router/" }
+leptos_axum = { path = "../leptos/integrations/axum/" }
+leptos_dom = { path = "../leptos/leptos_dom/" }
+leptos_macro = { path = "../leptos/leptos_macro/" }
+leptos_server = { path = "../leptos/leptos_server/" }
+reactive_stores = { path = "../leptos/reactive_stores/" }
+reactive_graph = { path = "../leptos/reactive_graph/" }
+server_fn = { path = "../leptos/server_fn/" }
+tachys = { path = "../leptos/tachys/" }
+hydration_context = { path = "../leptos/hydration_context/" }
+any_spawner = { path = "../leptos/any_spawner/" }
+throw_error = { path = "../leptos/any_error/" }
+either_of = { path = "../leptos/either_of/" }
+
 
 # See https://github.com/leptos-rs/cargo-leptos for documentation of all the parameters.
 

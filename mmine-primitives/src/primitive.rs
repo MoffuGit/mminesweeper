@@ -4,8 +4,11 @@ use leptos::{
     tachys::html::node_ref::NodeRefContainer,
     wasm_bindgen::JsCast,
 };
-use leptos_node_ref::{any_node_ref, AnyNodeRef};
+use leptos_node_ref::{AnyNodeRef, any_node_ref};
 use leptos_typed_fallback_show::TypedFallbackShow;
+use std::sync::Arc;
+
+use leptos::either::Either;
 
 #[component]
 pub fn Primitive<E, C>(
@@ -34,5 +37,65 @@ where
         >
             {children.with_value(|children| children()).add_any_attr(any_node_ref(node_ref))}
         </TypedFallbackShow>
+    }
+}
+
+#[component]
+pub fn RenderElement<S, E>(
+    element: HtmlElement<E, (), ()>,
+    state: S,
+    #[prop(into)] render: Option<RenderFn<S>>,
+    children: ChildrenFn,
+    node_ref: AnyNodeRef,
+) -> impl IntoView
+where
+    E: ElementType,
+    E: leptos::html::ElementWithChildren,
+    S: Clone + Copy + 'static + Default,
+{
+    view! {
+        {
+            if let Some(render) = render {
+                Either::Left(render.run(node_ref, children, state))
+            } else {
+                Either::Right(element.child(children()).node_ref(node_ref))
+            }
+        }
+    }
+}
+
+#[derive(Clone)]
+pub struct RenderFn<S: Clone + Copy + 'static + Default>(
+    Arc<dyn Fn(AnyNodeRef, ChildrenFn, S) -> AnyView + Send + Sync + 'static>,
+);
+
+impl<S> Default for RenderFn<S>
+where
+    S: Clone + Copy + 'static + Default,
+{
+    fn default() -> Self {
+        Self(Arc::new(|_, _, _| ().into_any()))
+    }
+}
+
+impl<F, C, S> From<F> for RenderFn<S>
+where
+    F: Fn(AnyNodeRef, ChildrenFn, S) -> C + Send + Sync + 'static,
+    C: RenderHtml + Send + 'static,
+    S: Clone + Copy + Default,
+{
+    fn from(value: F) -> Self {
+        Self(Arc::new(move |node_ref, children, state| {
+            value(node_ref, children, state).into_any()
+        }))
+    }
+}
+
+impl<S> RenderFn<S>
+where
+    S: Clone + Copy + Default + 'static,
+{
+    pub fn run(&self, node_ref: AnyNodeRef, children: ChildrenFn, state: S) -> AnyView {
+        (self.0)(node_ref, children, state)
     }
 }
