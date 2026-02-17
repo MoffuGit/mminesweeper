@@ -5,7 +5,7 @@ use leptos_node_ref::AnyNodeRef;
 use crate::common::status::TransitionStatus;
 use crate::dialog::root::DialogRootContext;
 use crate::dialog::root::use_dialog_root_context;
-use crate::primitive::Primitive;
+
 
 #[component]
 pub fn DialogOverlay(

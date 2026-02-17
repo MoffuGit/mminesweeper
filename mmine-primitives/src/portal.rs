@@ -3,32 +3,30 @@ use leptos_node_ref::AnyNodeRef;
 use leptos_portal::LeptosPortal;
 use send_wrapper::SendWrapper;
 
-use crate::primitive::Primitive;
+use crate::primitive::{RenderElement, RenderFn};
 
 #[component]
 pub fn Portal(
     #[prop(into, optional)] container: MaybeProp<SendWrapper<web_sys::Element>>,
     #[prop(optional)] container_ref: AnyNodeRef,
-    #[prop(into, optional)] as_child: MaybeProp<bool>,
+    #[prop(optional, into)] render: Option<RenderFn<()>>,
     #[prop(optional)] node_ref: AnyNodeRef,
     children: ChildrenFn,
 ) -> impl IntoView {
     let children = StoredValue::new(children);
+    let render = StoredValue::new(render);
 
-    // TODO: pass attrs to primitive
     view! {
-        // <AttributeInterceptor let:attrs>
-            <LeptosPortal mount=container mount_ref=container_ref>
-                <Primitive
-                    element=html::div
-                    as_child=as_child
-                    node_ref={node_ref}
-                    // {..attrs}
-                >
-                    {children.with_value(|children| children())}
-                </Primitive>
-            </LeptosPortal>
-        // </AttributeInterceptor>
+        <LeptosPortal mount=container mount_ref=container_ref>
+            <RenderElement
+                state=()
+                render=render.get_value()
+                node_ref=node_ref
+                element=html::div()
+            >
+                {children.with_value(|children| children())}
+            </RenderElement>
+        </LeptosPortal>
     }
 }
 

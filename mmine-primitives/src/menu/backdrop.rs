@@ -2,11 +2,11 @@ use leptos::{html, prelude::*};
 use leptos_node_ref::AnyNodeRef;
 
 use crate::menu::MenuProviderContext;
-use crate::primitive::Primitive;
+use crate::primitive::{RenderElement, RenderFn};
 
 #[component]
 pub fn MenuBackDrop(
-    #[prop(into, optional)] as_child: MaybeProp<bool>,
+    #[prop(optional, into)] render: Option<RenderFn<()>>,
     #[prop(optional)] node_ref: AnyNodeRef,
     #[prop(into, optional)] class: Signal<String>,
     #[prop(optional)] children: Option<ChildrenFn>,
@@ -27,18 +27,24 @@ pub fn MenuBackDrop(
         }
     };
 
-    view! {
-        <Primitive
-            element=html::div
-            as_child=as_child
-            node_ref={node_ref}
-            {..}
+    let spread = view! {
+        <{..}
             class=class
             data-state=move || transition_status.transition_status.get().to_string()
             data-modal=move || modal.to_string()
             on:click=on_click_handler
+        />
+    };
+
+    view! {
+        <RenderElement
+            state=()
+            render=render
+            node_ref=node_ref
+            element=html::div()
+            {..spread}
         >
             {children.get_value().map(|children| children())}
-        </Primitive>
+        </RenderElement>
     }
 }
