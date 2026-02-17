@@ -1,6 +1,7 @@
 use std::time::Duration;
 
 use leptos::context::Provider;
+use leptos_node_ref::AnyNodeRef;
 use leptos_use::{UseElementBoundingReturn, use_element_bounding};
 use reactive_stores::{Field, Patch};
 use wasm_bindgen::JsCast;
@@ -26,6 +27,7 @@ pub fn ToastRoot(
     children: Children,
     #[prop(into, optional)] class: Signal<String>,
     #[prop(into)] toast: Field<Toast>,
+    #[prop(into, optional)] node_ref: AnyNodeRef,
 ) -> impl IntoView {
     let ToastContext {
         hovering,
@@ -33,8 +35,6 @@ pub fn ToastRoot(
         limit,
         ..
     } = use_context().expect("should acces to the toast context");
-
-    let node_ref = NodeRef::new();
 
     let UseElementBoundingReturn { height, .. } = use_element_bounding(node_ref);
 

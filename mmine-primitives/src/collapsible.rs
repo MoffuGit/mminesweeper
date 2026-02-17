@@ -1,6 +1,6 @@
 use leptos::context::Provider;
-use leptos::html::Div;
 use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 
 use crate::common::status::use_transition_status;
 
@@ -11,8 +11,8 @@ pub struct CollapsibleContext {
     open: RwSignal<bool>,
     state: TransitionStatusState,
     dimensions: RwSignal<Dimensions>,
-    trigger_ref: NodeRef<Div>,
-    content_ref: NodeRef<Div>,
+    trigger_ref: AnyNodeRef,
+    content_ref: AnyNodeRef,
 }
 
 fn use_collapsible_context() -> CollapsibleContext {
@@ -28,15 +28,14 @@ pub struct Dimensions {
 #[component]
 pub fn CollapsibleRoot(
     #[prop(into, optional, default = RwSignal::new(false))] open: RwSignal<bool>,
+    #[prop(into, optional)] trigger_ref: AnyNodeRef,
+    #[prop(into, optional)] content_ref: AnyNodeRef,
     children: Children,
 ) -> impl IntoView {
     let dimensions = RwSignal::new(Dimensions {
         width: None,
         height: None,
     });
-
-    let trigger_ref = NodeRef::new();
-    let content_ref = NodeRef::new();
 
     let state = use_transition_status(open.into(), content_ref);
 

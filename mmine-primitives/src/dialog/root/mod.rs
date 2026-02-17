@@ -1,6 +1,7 @@
 use leptos::context::Provider;
 use leptos::html::Div;
 use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 
 use crate::common::dismissible::{DismissibleOptions, use_dismiss};
 use crate::common::floating::{FloatingContext, use_floating};
@@ -17,9 +18,9 @@ pub struct DialogRootContext {
     pub modal: bool,
     pub open: RwSignal<bool>,
     pub title_element_id: RwSignal<Option<String>>,
-    pub popup_ref: NodeRef<Div>,
-    pub trigger_ref: NodeRef<Div>,
-    pub backdrop_ref: NodeRef<Div>,
+    pub popup_ref: AnyNodeRef,
+    pub trigger_ref: AnyNodeRef,
+    pub backdrop_ref: AnyNodeRef,
     pub dismissible: bool,
     pub popup_status: TransitionStatusState,
     pub overlay_status: TransitionStatusState,
@@ -32,9 +33,9 @@ pub fn DialogRoot(
     #[prop(default = true)] modal: bool,
     #[prop(default = true)] dismissible: bool,
     #[prop(into)] on_open_change: Option<Callback<bool>>,
-    #[prop(into, optional)] trigger_ref: NodeRef<Div>,
-    #[prop(into, optional)] popup_ref: NodeRef<Div>,
-    #[prop(into, optional)] backdrop_ref: NodeRef<Div>,
+    #[prop(into, optional)] trigger_ref: AnyNodeRef,
+    #[prop(into, optional)] popup_ref: AnyNodeRef,
+    #[prop(into, optional)] backdrop_ref: AnyNodeRef,
     #[prop(optional)] dismiss_opts: DismissibleOptions,
     children: Children,
 ) -> impl IntoView {

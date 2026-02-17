@@ -1,6 +1,7 @@
 use leptos::ev::{animationend, transitionend};
 use leptos::html::Div;
 use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 use leptos_use::use_event_listener;
 use std::rc::Rc;
 use wasm_bindgen::JsCast;
@@ -40,7 +41,7 @@ pub enum TransitionStatus {
 
 pub fn use_transition_status(
     open: Signal<bool>,
-    content_node_ref: NodeRef<Div>,
+    content_node_ref: AnyNodeRef,
 ) -> TransitionStatusState {
     let transition_status: RwSignal<TransitionStatus> = RwSignal::new(TransitionStatus::Closed);
     let mounted = Memo::new(move |_| {

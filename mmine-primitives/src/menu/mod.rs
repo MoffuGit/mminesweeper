@@ -9,7 +9,8 @@ mod separator;
 mod sub_menu;
 mod trigger;
 use leptos::context::Provider;
-use leptos::{html, prelude::*};
+use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 
 pub use super::common::Align as MenuAlign;
 pub use super::common::Side as MenuSide;
@@ -35,10 +36,10 @@ pub struct MenuProviderContext {
     pub dismissible: bool,
     pub dismiss_opts: DismissibleOptions,
     pub modal: bool,
-    pub mount_ref: NodeRef<html::Div>,
-    pub trigger_ref: NodeRef<html::Div>,
+    pub mount_ref: AnyNodeRef,
+    pub trigger_ref: AnyNodeRef,
     pub floating: FloatingContext,
-    pub content_ref: NodeRef<html::Div>,
+    pub content_ref: AnyNodeRef,
     pub transition_status: TransitionStatusState,
 }
 
@@ -47,13 +48,13 @@ pub fn MenuProvider(
     children: Children,
     #[prop(optional, default = true)] modal: bool,
     #[prop(optional, into)] open: RwSignal<bool>,
-    #[prop(optional, into)] trigger_ref: NodeRef<html::Div>,
-    #[prop(optional, into)] content_ref: NodeRef<html::Div>,
+    #[prop(optional, into)] trigger_ref: AnyNodeRef,
+    #[prop(optional, into)] content_ref: AnyNodeRef,
+    #[prop(optional, into)] mount_ref: AnyNodeRef,
     #[prop(optional)] dismissible: bool,
     #[prop(optional)] dismiss_opts: DismissibleOptions,
     #[prop(into)] on_close: Option<Callback<()>>,
 ) -> impl IntoView {
-    let mount_ref = NodeRef::new();
     let transition_status = use_transition_status(open.into(), content_ref);
     let id = use_floating_node_id();
     let floating = use_floating(trigger_ref, mount_ref, open, Some(id));

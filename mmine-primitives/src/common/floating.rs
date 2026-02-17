@@ -1,5 +1,6 @@
 use leptos::html::Div;
 use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 use leptos_use::{UseElementBoundingReturn, use_element_bounding};
 use uuid::Uuid;
 use web_sys::MouseEvent;
@@ -17,8 +18,8 @@ pub struct FloatingPosition {
 
 #[derive(Debug, Clone, Copy)]
 pub struct FloatingContext {
-    pub trigger_ref: NodeRef<Div>,
-    pub floating_ref: NodeRef<Div>,
+    pub trigger_ref: AnyNodeRef,
+    pub floating_ref: AnyNodeRef,
     pub open: RwSignal<bool>,
     pub position_ref: RwSignal<Option<TriggerBoundingRect>>,
     pub id: Option<StoredValue<Uuid>>,
@@ -299,8 +300,8 @@ pub struct UseArrowProps {
 }
 
 pub fn use_floating(
-    trigger_ref: NodeRef<Div>,
-    floating_ref: NodeRef<Div>,
+    trigger_ref: AnyNodeRef,
+    floating_ref: AnyNodeRef,
     open: RwSignal<bool>,
     id: Option<StoredValue<Uuid>>,
 ) -> FloatingContext {

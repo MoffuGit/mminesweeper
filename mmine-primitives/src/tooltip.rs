@@ -1,6 +1,7 @@
 use leptos::context::Provider;
 use leptos::html;
 use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 
 pub use crate::common::Align as ToolTipAlign;
 pub use crate::common::Side as ToolTipSide;
@@ -17,8 +18,8 @@ use crate::portal::Portal;
 #[derive(Clone)]
 struct TooltipProviderContext {
     open: RwSignal<bool>,
-    trigger_ref: NodeRef<html::Div>,
-    content_ref: NodeRef<html::Div>,
+    trigger_ref: AnyNodeRef,
+    content_ref: AnyNodeRef,
     transition_state: TransitionStatusState,
     floating: FloatingContext,
     hoverable: Signal<bool>,
@@ -28,11 +29,10 @@ struct TooltipProviderContext {
 pub fn ToolTipProvider(
     children: Children,
     #[prop(optional, into)] hoverable: Signal<bool>,
+    #[prop(into, optional)] trigger_ref: AnyNodeRef,
+    #[prop(into, optional)] content_ref: AnyNodeRef,
 ) -> impl IntoView {
     let open = RwSignal::new(false);
-    let trigger_ref = NodeRef::<html::Div>::new();
-
-    let content_ref = NodeRef::<html::Div>::new();
 
     let transition_state = use_transition_status(open.into(), content_ref);
 

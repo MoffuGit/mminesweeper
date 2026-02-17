@@ -1,5 +1,6 @@
 use leptos::either::Either;
-use leptos::{html, prelude::*};
+use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 use tailwind_fuse::tw_merge;
 
 use super::{MenuAlign, MenuSide};
@@ -16,12 +17,11 @@ use leptos::context::Provider;
 pub fn SubMenuProvider(
     children: Children,
     #[prop(optional, into)] open: RwSignal<bool>,
-    #[prop(optional, into)] trigger_ref: NodeRef<html::Div>,
-    #[prop(optional, into)] content_ref: NodeRef<html::Div>,
+    #[prop(optional, into)] trigger_ref: AnyNodeRef,
+    #[prop(optional, into)] content_ref: AnyNodeRef,
+    #[prop(optional, into)] mount_ref: AnyNodeRef,
 ) -> impl IntoView {
     let transition_status = use_transition_status(open.into(), content_ref);
-
-    let mount_ref = NodeRef::new();
 
     let id = use_floating_node_id();
 
