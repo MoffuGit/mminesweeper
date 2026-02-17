@@ -97,7 +97,7 @@ pub fn ToolTipPortal(children: ChildrenFn) -> impl IntoView {
     let state = context.transition_state;
     view! {
         <Show when=move || state.mounted.get()>
-            <Portal>
+            <Portal render=None>
                 {children.get_value()()}
             </Portal>
         </Show>

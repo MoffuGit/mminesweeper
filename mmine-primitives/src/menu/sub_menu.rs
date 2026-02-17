@@ -80,7 +80,7 @@ pub fn SubMenuPortal(children: ChildrenFn) -> impl IntoView {
     let mounted = context.transition_status.mounted;
     view! {
         <Show when=move || mounted.get()>
-            <Portal>
+            <Portal render=None>
                     {children.get_value()()}
             </Portal>
         </Show>

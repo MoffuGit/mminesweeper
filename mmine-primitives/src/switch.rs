@@ -1,5 +1,9 @@
 use leptos::context::Provider;
+use leptos::html;
 use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
+
+use crate::primitive::{RenderElement, RenderFn};
 
 #[derive(Debug, Clone)]
 pub struct SwitchContext {
@@ -14,15 +18,24 @@ pub enum SwitchState {
     Unchecked,
 }
 
+#[derive(Debug, Clone, Copy, Default)]
+pub struct SwitchRootState {
+    pub checked: RwSignal<bool>,
+    pub disabled: Signal<bool>,
+}
+
 #[component]
 pub fn SwitchRoot(
     #[prop(into, optional)] checked: RwSignal<bool>,
     #[prop(optional, into)] class: Signal<String>,
     #[prop(optional, into, default = Signal::from(false))] disabled: Signal<bool>,
     #[prop(optional)] children: Option<ChildrenFn>,
+    #[prop(optional, into)] render: Option<RenderFn<SwitchRootState>>,
+    #[prop(optional)] node_ref: AnyNodeRef,
 ) -> impl IntoView {
-    view! {
-        <button
+    let children = StoredValue::new(children);
+    let spread = view! {
+        <{..}
             on:click=move |_| {
                 checked.update(|ch| {
                     *ch = !*ch
@@ -37,22 +50,34 @@ pub fn SwitchRoot(
                     SwitchState::Unchecked.to_string()
                 }
             }
-        >
-            <Provider value=SwitchContext {
-                checked,
-                disabled
-            }>
-                {children.map(|children| children())}
-            </Provider>
-        </button>
+        />
+    };
+    view! {
+        <Provider value=SwitchContext { checked, disabled }>
+            <RenderElement
+                state=SwitchRootState { checked, disabled }
+                render=render
+                node_ref=node_ref
+                element=html::button()
+                {..spread}
+            >
+                {children.get_value().map(|children| children())}
+            </RenderElement>
+        </Provider>
     }
 }
 
 #[component]
-pub fn SwitchTumb(#[prop(optional, into)] class: Signal<String>) -> impl IntoView {
+pub fn SwitchTumb(
+    #[prop(optional, into)] class: Signal<String>,
+    #[prop(optional)] children: Option<ChildrenFn>,
+    #[prop(optional, into)] render: Option<RenderFn<()>>,
+    #[prop(optional)] node_ref: AnyNodeRef,
+) -> impl IntoView {
     let SwitchContext { checked, .. } = use_context().expect("should acces to the switch context");
-    view! {
-        <span
+    let children = StoredValue::new(children);
+    let spread = view! {
+        <{..}
             class=class
             data-state=move || {
                 if checked.get() {
@@ -62,5 +87,16 @@ pub fn SwitchTumb(#[prop(optional, into)] class: Signal<String>) -> impl IntoVie
                 }
             }
         />
+    };
+    view! {
+        <RenderElement
+            state=()
+            render=render
+            node_ref=node_ref
+            element=html::span()
+            {..spread}
+        >
+            {children.get_value().map(|children| children())}
+        </RenderElement>
     }
 }

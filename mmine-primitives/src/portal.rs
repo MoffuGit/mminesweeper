@@ -9,7 +9,7 @@ use crate::primitive::{RenderElement, RenderFn};
 pub fn Portal(
     #[prop(into, optional)] container: MaybeProp<SendWrapper<web_sys::Element>>,
     #[prop(optional)] container_ref: AnyNodeRef,
-    #[prop(optional, into)] render: Option<RenderFn<()>>,
+    #[prop(into)] render: Option<RenderFn<()>>,
     #[prop(optional)] node_ref: AnyNodeRef,
     children: ChildrenFn,
 ) -> impl IntoView {
