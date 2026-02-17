@@ -7,7 +7,7 @@ use mmine_primitives::avatar::AvatarRoot as AvatarPrimitive;
 
 #[component]
 pub fn Avatar(
-    children: Children,
+    children: ChildrenFn,
     #[prop(optional, into)] class: MaybeProp<String>,
 ) -> impl IntoView {
     view! {
