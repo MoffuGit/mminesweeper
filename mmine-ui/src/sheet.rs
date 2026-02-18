@@ -1,11 +1,11 @@
+use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 use mmine_primitives::common::Side;
 use mmine_primitives::dialog::DialogOverlay as SheetOverlayPrimitive;
 use mmine_primitives::dialog::DialogPopup as SheetPopupPrimitive;
 use mmine_primitives::dialog::DialogPortal as SheetPortalPrimitive;
 use mmine_primitives::dialog::DialogRoot as SheetPrimitive;
 use mmine_primitives::dialog::DialogTrigger as SheetTriggerPrimitive;
-use leptos::prelude::*;
-use leptos_node_ref::AnyNodeRef;
 use send_wrapper::SendWrapper;
 
 #[component]
@@ -41,13 +41,11 @@ pub fn SheetTrigger(
 pub fn SheetPortal(
     #[prop(into, optional)] container: MaybeProp<SendWrapper<web_sys::Element>>,
     #[prop(optional)] container_ref: AnyNodeRef,
-    #[prop(into, optional)] as_child: MaybeProp<bool>,
     #[prop(optional)] node_ref: AnyNodeRef,
     children: ChildrenFn,
 ) -> impl IntoView {
-    let children = StoredValue::new(children);
     view! {
-        <SheetPortalPrimitive container=container container_ref=container_ref as_child=as_child node_ref=node_ref children=children />
+        <SheetPortalPrimitive container=container container_ref=container_ref  node_ref=node_ref children=children />
     }
 }
 
@@ -76,10 +74,18 @@ pub fn SheetPopup(
 ) -> impl IntoView {
     let children = StoredValue::new(children);
     let sheet_popup = match side {
-        Side::Top => "data-[state=closing]:slide-out-to-top data-[state=opening]:slide-in-from-top inset-x-0 top-0 h-auto border-b",
-        Side::Bottom => "data-[state=closing]:slide-out-to-bottom data-[state=opening]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
-        Side::Left => "data-[state=closing]:slide-out-to-left data-[state=opening]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
-        Side::Right =>  "data-[state=closing]:slide-out-to-right data-[state=opening]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
+        Side::Top => {
+            "data-[state=closing]:slide-out-to-top data-[state=opening]:slide-in-from-top inset-x-0 top-0 h-auto border-b"
+        }
+        Side::Bottom => {
+            "data-[state=closing]:slide-out-to-bottom data-[state=opening]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t"
+        }
+        Side::Left => {
+            "data-[state=closing]:slide-out-to-left data-[state=opening]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm"
+        }
+        Side::Right => {
+            "data-[state=closing]:slide-out-to-right data-[state=opening]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm"
+        }
     };
     view! {
         <SheetPortal>

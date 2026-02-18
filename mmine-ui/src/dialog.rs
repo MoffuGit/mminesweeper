@@ -1,13 +1,13 @@
+use leptos::either::Either;
+use leptos::html::Div;
+use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
 use mmine_primitives::common::dismissible::DismissibleOptions;
 use mmine_primitives::dialog::DialogOverlay as DialogOverlayPrimitive;
 use mmine_primitives::dialog::DialogPopup as DialogPopupPrimitive;
 use mmine_primitives::dialog::DialogPortal as DialogPortalPrimitive;
 use mmine_primitives::dialog::DialogRoot as DialogPrimitive;
 use mmine_primitives::dialog::DialogTrigger as DialogTriggerPrimitive;
-use leptos::either::Either;
-use leptos::html::Div;
-use leptos::prelude::*;
-use leptos_node_ref::AnyNodeRef;
 use send_wrapper::SendWrapper;
 use tailwind_fuse::tw_merge;
 
@@ -45,13 +45,11 @@ pub fn DialogTrigger(
 pub fn DialogPortal(
     #[prop(into, optional)] container: MaybeProp<SendWrapper<web_sys::Element>>,
     #[prop(optional)] container_ref: AnyNodeRef,
-    #[prop(into, optional)] as_child: MaybeProp<bool>,
     #[prop(optional)] node_ref: AnyNodeRef,
     children: ChildrenFn,
 ) -> impl IntoView {
-    let children = StoredValue::new(children);
     view! {
-        <DialogPortalPrimitive  container=container container_ref=container_ref as_child=as_child node_ref=node_ref children=children/>
+        <DialogPortalPrimitive  container=container container_ref=container_ref  node_ref=node_ref children=children/>
     }
 }
 

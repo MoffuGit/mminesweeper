@@ -35,7 +35,7 @@ pub fn Tabs(
 #[component]
 pub fn TabsList(
     #[prop(optional, into)] class: MaybeProp<String>,
-    children: Children,
+    children: ChildrenFn,
 ) -> impl IntoView {
     view! {
         <TabsListPrimitive

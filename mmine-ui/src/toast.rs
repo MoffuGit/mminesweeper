@@ -1,3 +1,5 @@
+use icons::IconCircleCheck;
+use leptos::prelude::*;
 pub use mmine_primitives::toasts::Toast as ToastData;
 use mmine_primitives::toasts::ToastClose as ToastClosePrimitive;
 use mmine_primitives::toasts::ToastDescription as ToastDescriptionPrimitive;
@@ -9,8 +11,6 @@ pub use mmine_primitives::toasts::ToastStoreStoreFields;
 use mmine_primitives::toasts::ToastTitle as ToastTitlePrimitive;
 use mmine_primitives::toasts::ToastViewport as ToastViewportPrimitive;
 pub use mmine_primitives::toasts::manager::use_toast_store;
-use icons::IconCircleCheck;
-use leptos::prelude::*;
 use reactive_stores::Field;
 
 #[derive(Debug, Default, Clone, Copy, strum_macros::EnumString)]
@@ -34,7 +34,7 @@ pub fn Toasts(children: Children) -> impl IntoView {
 }
 
 #[component]
-pub fn ToastView(children: Children) -> impl IntoView {
+pub fn ToastView(children: ChildrenFn) -> impl IntoView {
     view! {
         <ToastViewportPrimitive
             class="absolute bottom-4 right-4 w-[300px] isolate z-[100]"
