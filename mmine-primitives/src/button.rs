@@ -6,19 +6,11 @@ use crate::primitive::{RenderElement, RenderFn};
 
 #[component]
 pub fn Button(
-    #[prop(optional, into)] class: Signal<String>,
-    #[prop(optional, into, default = Signal::from(false))] disabled: Signal<bool>,
-    #[prop(optional)] children: Option<ChildrenFn>,
-    #[prop(optional, into)] render: Option<RenderFn<ButtonState>>,
+    #[prop(optional, into)] disabled: Signal<bool>,
+    #[prop(default = None)] render: Option<RenderFn<ButtonState>>,
     #[prop(optional)] node_ref: AnyNodeRef,
+    children: ChildrenFn,
 ) -> impl IntoView {
-    let children = StoredValue::new(children);
-    let spread = view! {
-        <{..}
-            disabled=disabled
-            class=class
-        />
-    };
     view! {
         <RenderElement
             state=ButtonState {
@@ -27,10 +19,10 @@ pub fn Button(
             render=render
             node_ref=node_ref
             element=button()
-
-            {..spread}
+            {..}
+            data-disabled=move || disabled.get()
         >
-            {children.get_value().map(|children| children())}
+            {children()}
         </RenderElement>
 
     }

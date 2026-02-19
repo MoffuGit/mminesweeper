@@ -23,4 +23,4 @@ reactive_stores.workspace = true
 [features]
 default = []
 hydrate = ["leptos/hydrate"]
-ssr = ["leptos/ssr",  "leptos-use/ssr"]
+ssr = ["leptos/ssr", "leptos-use/ssr"]

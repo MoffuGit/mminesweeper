@@ -51,7 +51,7 @@ pub fn RenderElement<S, E>(
 where
     E: ElementType,
     E: leptos::html::ElementWithChildren,
-    S: Clone + Copy + 'static + Default,
+    S: Clone + Copy + 'static,
 {
     view! {
         {
@@ -65,7 +65,7 @@ where
 }
 
 #[derive(Clone)]
-pub struct RenderFn<S: Clone + Copy + 'static + Default>(
+pub struct RenderFn<S: Clone + Copy + 'static>(
     Arc<dyn Fn(AnyNodeRef, ChildrenFn, S) -> AnyView + Send + Sync + 'static>,
 );
 
@@ -82,7 +82,7 @@ impl<F, C, S> From<F> for RenderFn<S>
 where
     F: Fn(AnyNodeRef, ChildrenFn, S) -> C + Send + Sync + 'static,
     C: RenderHtml + Send + 'static,
-    S: Clone + Copy + Default,
+    S: Clone + Copy,
 {
     fn from(value: F) -> Self {
         Self(Arc::new(move |node_ref, children, state| {
@@ -93,7 +93,7 @@ where
 
 impl<S> RenderFn<S>
 where
-    S: Clone + Copy + Default + 'static,
+    S: Clone + Copy + 'static,
 {
     pub fn run(&self, node_ref: AnyNodeRef, children: ChildrenFn, state: S) -> AnyView {
         (self.0)(node_ref, children, state)

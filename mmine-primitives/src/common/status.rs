@@ -30,12 +30,13 @@ impl AnimationFrame {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, strum_macros::EnumString, strum_macros::Display)]
+#[derive(Debug, Clone, PartialEq, strum_macros::EnumString, strum_macros::Display, Default)]
 #[strum(serialize_all = "lowercase")]
 pub enum TransitionStatus {
     Opening,
     Closing,
     Open,
+    #[default]
     Closed,
 }
 
@@ -161,7 +162,7 @@ pub fn use_transition_status(
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct TransitionStatusState {
     pub mounted: Memo<bool>,
     pub transition_status: RwSignal<TransitionStatus>,

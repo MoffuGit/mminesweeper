@@ -19,10 +19,10 @@ pub fn Panel(
     let spread = view! { <{..} class=class /> };
 
     view! {
-        <Show when=move || selected_tab.with(|selected| selected == &value.get_value())>
-            <RenderElement state=() render=render.clone() node_ref=node_ref element=html::div() {..spread.clone()}>
-                {children.get_value().map(|children| children())}
-            </RenderElement>
-        </Show>
+        // <Show when=move || selected_tab.with(|selected| selected == &value.get_value())>
+        //     <RenderElement state=() render=render.clone() node_ref=node_ref element=html::div() {..spread.clone()}>
+        //         {children.get_value().map(|children| children())}
+        //     </RenderElement>
+        // </Show>
     }
 }

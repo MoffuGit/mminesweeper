@@ -12,7 +12,7 @@ pub fn Avatar(
 ) -> impl IntoView {
     view! {
         <AvatarPrimitive
-            class=MaybeProp::derive(move || Some(tw_merge!("relative flex size-8 shrink-0 overflow-hidden rounded-full", class.get())))
+            // class=MaybeProp::derive(move || Some(tw_merge!("relative flex size-8 shrink-0 overflow-hidden rounded-full", class.get())))
         >
             {children()}
         </AvatarPrimitive>
@@ -27,7 +27,7 @@ pub fn AvatarImage(
     view! {
         <AvatarImagePrimitive
             image_url=url
-            class=MaybeProp::derive(move || Some(tw_merge!("aspect-square size-full object-cover", class.get())))
+            // class=MaybeProp::derive(move || Some(tw_merge!("aspect-square size-full object-cover", class.get())))
         />
     }
 }

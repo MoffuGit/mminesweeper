@@ -1,6 +1,7 @@
-use leptos::either::Either;
-use leptos::html::Button as ButtonPrimitive;
 use leptos::prelude::*;
+use leptos_node_ref::AnyNodeRef;
+use mmine_primitives::button::{Button as ButtonPrimitive, ButtonState};
+use mmine_primitives::primitive::RenderFn;
 use tailwind_fuse::*;
 
 #[derive(Debug, PartialEq, TwVariant)]
@@ -46,13 +47,17 @@ pub fn Button(
     #[prop(optional, into)] size: Signal<ButtonSizes>,
     #[prop(optional, into)] class: Signal<String>,
     #[prop(optional, into)] disabled: Signal<bool>,
-    #[prop(optional)] children: Option<Children>,
-    #[prop(into, optional)] node_ref: NodeRef<ButtonPrimitive>,
+    #[prop(optional, into)] render: Option<RenderFn<ButtonState>>,
+    #[prop(optional)] node_ref: AnyNodeRef,
+    children: ChildrenFn,
 ) -> impl IntoView {
     view! {
-        <button
+        <ButtonPrimitive
             node_ref=node_ref
-            data-slot="button"
+            disabled=disabled
+            render={render}
+
+            {..}
             class=move || {
                 tw_join!(
                     "inline-flex duration-150 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -61,13 +66,9 @@ pub fn Button(
                     class.get()
                 )
             }
-            disabled=disabled
+            data-slot="button"
         >
-            {if let Some(children) = children {
-                Either::Left(children())
-            } else {
-                Either::Right(())
-            }}
-        </button>
+            {children()}
+        </ButtonPrimitive>
     }
 }
