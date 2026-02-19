@@ -1,4 +1,5 @@
-use crate::common::status::{TransitionStatusState, use_transition_status};
+use crate::common::status::use_transition_status;
+use leptos::attribute_interceptor::AttributeInterceptor;
 use leptos::context::Provider;
 use leptos::html;
 use leptos::prelude::*;
@@ -61,9 +62,11 @@ pub fn AvatarImage(
         image_url
     });
 
+    let img_node = NodeRef::<html::Img>::new();
+
     Effect::new(move |_| {
         if image_url.get().is_some()
-            && let Some(img_element) = node_ref.get()
+            && let Some(img_element) = img_node.get()
         {
             let current_status = image_status.get_untracked();
 
@@ -84,25 +87,39 @@ pub fn AvatarImage(
         }
     });
 
-    let is_visible = Signal::derive(move || image_status.get() == ImageLoadingStatus::Loaded);
-    let state = use_transition_status(is_visible, node_ref.into_any());
-
     view! {
+        <AttributeInterceptor let:attrs>
             <img
-                node_ref=node_ref
-                src=image_url
                 on:load=move |_| {
                     image_status.set(ImageLoadingStatus::Loaded);
                 }
                 on:error=move |_| {
                     image_status.set(ImageLoadingStatus::Error);
                 }
-                class:hidden=move || {
-                    let current_status = image_status.get();
-                    !matches!(current_status, ImageLoadingStatus::Loaded)
-                }
+                class:hidden=true
+            />
+            <MountedAvatarImage image_url=image_url node_ref={node_ref} {..attrs}/>
+        </AttributeInterceptor>
+    }
+}
+
+#[component]
+fn MountedAvatarImage(image_url: MaybeProp<String>, node_ref: NodeRef<html::Img>) -> impl IntoView {
+    let AvatarState { image_status, .. } = use_context::<AvatarState>()
+        .expect("AvatarImage expects an AvatarRoot context provider for ImageLoadingStatus");
+
+    let is_visible = Signal::derive(move || image_status.get() == ImageLoadingStatus::Loaded);
+    let state = use_transition_status(is_visible, node_ref.into_any());
+
+    view! {
+        <Show when=move || state.mounted.get()>
+            <img
+                node_ref=node_ref
+                src=image_url
                 data-state=move || state.transition_status.get().to_string()
             />
+        </Show>
+
     }
 }
 
