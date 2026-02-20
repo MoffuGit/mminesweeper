@@ -18,7 +18,7 @@ pub mod tooltip;
 
 //TODO:
 // [*] button
-// [] avatar
+// [*] avatar
 // [] checkbox
 // [] separator
 // [] switch
