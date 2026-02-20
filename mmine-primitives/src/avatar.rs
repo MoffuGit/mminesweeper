@@ -123,30 +123,27 @@ fn MountedAvatarImage(image_url: MaybeProp<String>, node_ref: NodeRef<html::Img>
     }
 }
 
+//NOTE:
+//this is missing a timer
 #[component]
 pub fn AvatarFallback(
-    #[prop(optional, into)] class: MaybeProp<String>,
-    #[prop(optional, into)] render: Option<RenderFn<RwSignal<ImageLoadingStatus>>>,
+    #[prop(default = None)] render: Option<RenderFn<RwSignal<ImageLoadingStatus>>>,
     #[prop(optional)] node_ref: AnyNodeRef,
-    #[prop(optional)] children: Option<ChildrenFn>,
+    children: ChildrenFn,
 ) -> impl IntoView {
     let status = use_context::<RwSignal<ImageLoadingStatus>>()
         .expect("AvatarFallback expects an AvatarRoot context provider for ImageLoadingStatus");
 
     let children = StoredValue::new(children);
-    let render = StoredValue::new(render);
-
     view! {
         <Show when=move || matches!(status.get(), ImageLoadingStatus::Loading | ImageLoadingStatus::Error)>
             <RenderElement
                 state=status
                 node_ref=node_ref
-                render=render.get_value()
+                render=render.clone()
                 element=html::span()
-                {..}
-                class=class
             >
-                {children.get_value().map(|children| children())}
+                {children.get_value()()}
             </RenderElement>
         </Show>
     }

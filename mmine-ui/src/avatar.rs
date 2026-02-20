@@ -39,7 +39,7 @@ pub fn AvatarFallback(
 ) -> impl IntoView {
     view! {
         <AvatarFallbackPrimitive
-            class=MaybeProp::derive(move || Some(tw_merge!("bg-muted flex size-full items-center justify-center rounded-full", class.get())))
+            // class=MaybeProp::derive(move || Some(tw_merge!("bg-muted flex size-full items-center justify-center rounded-full", class.get())))
         >
             {children()}
         </AvatarFallbackPrimitive>
