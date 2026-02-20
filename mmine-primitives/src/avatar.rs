@@ -123,22 +123,44 @@ fn MountedAvatarImage(image_url: MaybeProp<String>, node_ref: NodeRef<html::Img>
     }
 }
 
-//NOTE:
-//this is missing a timer
 #[component]
 pub fn AvatarFallback(
-    #[prop(default = None)] render: Option<RenderFn<RwSignal<ImageLoadingStatus>>>,
+    #[prop(default = None)] render: Option<RenderFn<AvatarState>>,
     #[prop(optional)] node_ref: AnyNodeRef,
+    #[prop(optional)] delay: Option<u64>,
     children: ChildrenFn,
 ) -> impl IntoView {
-    let status = use_context::<RwSignal<ImageLoadingStatus>>()
-        .expect("AvatarFallback expects an AvatarRoot context provider for ImageLoadingStatus");
+    let state = use_context::<AvatarState>()
+        .expect("AvatarImage expects an AvatarRoot context provider for ImageLoadingStatus");
+    let image_status = state.image_status;
 
     let children = StoredValue::new(children);
+
+    let delay_passed = RwSignal::new(false);
+
+    let timer = StoredValue::new(None::<TimeoutHandle>);
+
+    Effect::new(move |_| {
+        if let Some(delay) = delay {
+            timer.set_value(
+                set_timeout_with_handle(
+                    move || delay_passed.set(true),
+                    std::time::Duration::from_millis(delay),
+                )
+                .ok(),
+            );
+        }
+    });
+    on_cleanup(move || {
+        if let Some(timer) = timer.get_value() {
+            timer.clear();
+        }
+    });
+
     view! {
-        <Show when=move || matches!(status.get(), ImageLoadingStatus::Loading | ImageLoadingStatus::Error)>
+        <Show when=move || matches!(image_status.get(), ImageLoadingStatus::Loading | ImageLoadingStatus::Error) && delay_passed.get()>
             <RenderElement
-                state=status
+                state=state
                 node_ref=node_ref
                 render=render.clone()
                 element=html::span()
