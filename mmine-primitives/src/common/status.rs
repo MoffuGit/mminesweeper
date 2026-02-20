@@ -1,5 +1,4 @@
 use leptos::ev::{animationend, transitionend};
-use leptos::html::Div;
 use leptos::prelude::*;
 use leptos_node_ref::AnyNodeRef;
 use leptos_use::use_event_listener;
