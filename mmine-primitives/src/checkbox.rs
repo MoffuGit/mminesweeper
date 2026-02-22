@@ -26,49 +26,54 @@ pub struct CheckboxRootState {
 
 #[component]
 pub fn CheckboxRoot(
-    #[prop(into, optional)] checked: RwSignal<bool>,
-    #[prop(optional, into)] class: Signal<String>,
-    #[prop(optional, into, default = Signal::from(false))] disabled: Signal<bool>,
-    #[prop(optional)] children: Option<ChildrenFn>,
-    #[prop(optional, into)] render: Option<RenderFn<CheckboxRootState>>,
+    #[prop(optional, into)] id: MaybeProp<String>,
+    #[prop(optional, into)] name: MaybeProp<String>,
+    #[prop(optional, into)] checked: RwSignal<bool>,
+    #[prop(optional, into)] disabled: Signal<bool>,
+    #[prop(optional, into)] default_checked: bool,
+    #[prop(default = None)] render: Option<RenderFn<CheckboxRootState>>,
     #[prop(optional)] node_ref: AnyNodeRef,
+    //onCheckedChnage(checked, event)
+    //readonly
+    //requiered
+    //inputRef
+    //value
+    children: ChildrenFn,
 ) -> impl IntoView {
-    let children = StoredValue::new(children);
-    let spread = view! {
-        <{..}
-            role="checkbox"
-            aria-checked=move || checked.get().to_string()
-            on:click=move |_| {
-                if !disabled.get() {
-                    checked.update(|ch| {
-                        *ch = !*ch
-                    });
-                }
-            }
-            disabled=disabled
-            class=class
-            data-state=move || {
-                if checked.get() {
-                    CheckboxState::Checked.to_string()
-                } else {
-                    CheckboxState::Unchecked.to_string()
-                }
-            }
-        />
-    };
-    view! {
-        <Provider value=CheckboxContext { checked, disabled }>
-            <RenderElement
-                state=CheckboxRootState { checked, disabled }
-                render=render
-                node_ref=node_ref
-                element=html::button()
-                {..spread}
-            >
-                {children.get_value().map(|children| children())}
-            </RenderElement>
-        </Provider>
-    }
+    // let spread = view! {
+    //     <{..}
+    //         role="checkbox"
+    //         aria-checked=move || checked.get().to_string()
+    //         on:click=move |_| {
+    //             if !disabled.get() {
+    //                 checked.update(|ch| {
+    //                     *ch = !*ch
+    //                 });
+    //             }
+    //         }
+    //         disabled=disabled
+    //         data-state=move || {
+    //             if checked.get() {
+    //                 CheckboxState::Checked.to_string()
+    //             } else {
+    //                 CheckboxState::Unchecked.to_string()
+    //             }
+    //         }
+    //     />
+    // };
+    // view! {
+    //     <Provider value=CheckboxContext { checked, disabled }>
+    //         <RenderElement
+    //             state=CheckboxRootState { checked, disabled }
+    //             render=render
+    //             node_ref=node_ref
+    //             element=html::button()
+    //             {..spread}
+    //         >
+    //             {children()};
+    //         </RenderElement>
+    //     </Provider>
+    // }
 }
 
 #[component]
