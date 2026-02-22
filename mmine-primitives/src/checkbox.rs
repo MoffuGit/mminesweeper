@@ -29,17 +29,40 @@ pub fn CheckboxRoot(
     #[prop(optional, into)] id: MaybeProp<String>,
     #[prop(optional, into)] name: MaybeProp<String>,
     #[prop(optional, into)] checked: RwSignal<bool>,
-    #[prop(optional, into)] disabled: Signal<bool>,
-    #[prop(optional, into)] default_checked: bool,
+    #[prop(optional, into)] disabled: MaybeProp<bool>,
+    #[prop(optional, into)] default_checked: MaybeProp<bool>,
     #[prop(default = None)] render: Option<RenderFn<CheckboxRootState>>,
     #[prop(optional)] node_ref: AnyNodeRef,
-    //onCheckedChnage(checked, event)
-    //readonly
-    //requiered
-    //inputRef
-    //value
+    #[prop(optional)] on_checked_change: Option<Callback<bool, ()>>,
     children: ChildrenFn,
+    #[prop(optional)] readonly: MaybeProp<bool>,
+    #[prop(optional)] required: MaybeProp<bool>,
+    #[prop(optional)] input_ref: AnyNodeRef,
+    #[prop(optional)] value: MaybeProp<String>,
 ) -> impl IntoView {
+    //State
+    //checked
+    //disabled
+    //readonly
+    //required
+
+    view! {
+        //Provider
+        //children
+        <input
+            checked=move || checked.get()
+            disabled=disabled
+            required=required
+            readonly=readonly
+            name=name
+            value=value
+            id=id
+            type="checkbox"
+            aria_hidden=true
+            tabindex=-1
+            node_ref=input_ref
+        />
+    }
     // let spread = view! {
     //     <{..}
     //         role="checkbox"
